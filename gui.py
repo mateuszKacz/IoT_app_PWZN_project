@@ -1,4 +1,4 @@
-from tkinter import Label, Button, Radiobutton, Canvas, Frame, StringVar
+from tkinter import Label, Button, Radiobutton, Canvas, Frame, StringVar, TOP, LEFT, RIGHT
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.animation as animation
@@ -9,17 +9,24 @@ class GUI(Frame):
 
     def __init__(self, root, data, devices):
         super().__init__(root)
-        self.grid()
         self.root = root
+        self.root.geometry('500x400')
         # make GUI
-        self.main_frame = Frame(self.root, height=400, width=600)
-        self.main_frame.grid()
-        self.left_frame = Frame(self.main_frame, relief='groove', bd=3, height=400, width=200)
+        self.main_frame = Frame(self.root, height=400, width=500)
+        self.main_frame.pack_propagate(0)
+        self.main_frame.pack()
+        self.left_frame = Frame(self.main_frame, relief='groove', bd=3, height=400, width=100)
         self.right_frame = Frame(self.main_frame, relief='groove', bd=3, height=400, width=500)
-        self.left_frame.grid(row=0, column=0)
-        self.right_frame.grid(row=0, column=1)
-        self.button_add_device = Button(self.left_frame, text='Add Device', relief='groove', command=self.add_device).pack(fill='both', anchor='n')
-        # IoT devices
+        self.right_top_frame = Frame(self.right_frame, relief='groove', bd=1, height=200, width=350)
+        self.right_bottom_frame = Frame(self.right_frame, relief='groove', bd=1, height=200, width=350)
+        self.left_frame.pack(anchor='n', side=LEFT, fill='x')
+        self.right_frame.pack(anchor='n', side=RIGHT)
+        self.right_top_frame.pack()
+        self.right_bottom_frame.pack()
+        self.button_add_device = Button(self.left_frame, text='Add Device', relief='groove',
+                                        command=self.add_device).pack(side=TOP, expand=True, fill='x')
+        self.test_button = Button(self.right_bottom_frame, text='test', relief='groove').pack()
+        # IoT devices - menu
         self.devices = devices
         self.iot_dev_name_var = StringVar()
         self.iot_dev_name_var.set(self.devices.list_of_devices[0].serial_number)
@@ -28,6 +35,8 @@ class GUI(Frame):
                                                  value=self.devices.list_of_devices[0].serial_number).pack(fill='both')
         self.data = data
         self.ani = None
+        self.main_frame.pack_propagate(0)
+        self.root.resizable(0, 0)
 
     def draw_graph(self):
 
@@ -37,7 +46,7 @@ class GUI(Frame):
         self.ax = self.figure.add_subplot(111)
         self.line = self.ax.plot(self.data.data['Time'], self.data.data['Temp'])
 
-        self.canvas = FigureCanvasTkAgg(self.figure, self.right_frame)
+        self.canvas = FigureCanvasTkAgg(self.figure, self.right_top_frame)
         self.canvas.draw()
         self.canvas.get_tk_widget().pack(fill='both', expand=1)
 
