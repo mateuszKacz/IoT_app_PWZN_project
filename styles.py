@@ -1,5 +1,5 @@
 
-class Styles():
+class Styles:
     """Contains all the styles and fonts types used in app"""
 
     def __init__(self):

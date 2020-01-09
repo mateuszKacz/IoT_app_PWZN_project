@@ -1,4 +1,9 @@
 
+# tworzenie i usuwanie urzadzen, dodanie zapisywania do pliku i zbierania (start, stop) danych.
+# dodanie flag '-n 4' -> tworzenie 4 urzadzen fejkowych przy starcie
+# dodanie flagi '-f <sciezka do pliku>' dodanie urzadzen z pliku
+# Readme.md - cel, instruckja instalacji, przyklad uruchomienia
+
 DEVICE_SERIAL_CORE = 'iot-dev-'
 
 

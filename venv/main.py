@@ -4,13 +4,14 @@ from gui import GUI
 from datetime import datetime as dt
 from data import Data
 from device import Devices
+import sys
 
 
 def main():
     # tkinter init
     root = tk.Tk()
     root.geometry("600x400")
-    root.title('MyApp')
+    root.title('IoT Manager')
     # devices init
     devices = Devices()
     data = Data()

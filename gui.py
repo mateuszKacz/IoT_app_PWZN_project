@@ -11,6 +11,7 @@ class GUI(Frame):
         super().__init__(root)
         self.root = root
         self.root.geometry('500x400')
+
         # make GUI
         self.main_frame = Frame(self.root, height=400, width=500)
         self.main_frame.pack_propagate(0)
@@ -26,6 +27,7 @@ class GUI(Frame):
         self.button_add_device = Button(self.left_frame, text='Add Device', relief='groove',
                                         command=self.add_device).pack(side=TOP, expand=True, fill='x')
         self.test_button = Button(self.right_bottom_frame, text='test', relief='groove').pack()
+
         # IoT devices - menu
         self.devices = devices
         self.iot_dev_name_var = StringVar()
@@ -33,6 +35,8 @@ class GUI(Frame):
         self.radiobutton_iot_dev_1 = Radiobutton(self.left_frame, text=self.devices.list_of_devices[0].serial_number,
                                                  variable=self.iot_dev_name_var,
                                                  value=self.devices.list_of_devices[0].serial_number).pack(fill='both')
+
+        # other objects
         self.data = data
         self.ani = None
         self.main_frame.pack_propagate(0)
@@ -41,7 +45,7 @@ class GUI(Frame):
     def draw_graph(self):
 
         self.figure = plt.Figure(figsize=(6,5), dpi=70)
-        self.figure.suptitle('Graph')
+        self.figure.suptitle('Real-time temperature')
 
         self.ax = self.figure.add_subplot(111)
         self.line = self.ax.plot(self.data.data['Time'], self.data.data['Temp'])
@@ -49,6 +53,7 @@ class GUI(Frame):
         self.canvas = FigureCanvasTkAgg(self.figure, self.right_top_frame)
         self.canvas.draw()
         self.canvas.get_tk_widget().pack(fill='both', expand=1)
+        self.ax.set_ylim(0, 50.)
 
         self.start()
 
@@ -58,7 +63,7 @@ class GUI(Frame):
         self.ax.plot(self.data.data['Time'], self.data.data['Temp'], color='blue')
         self.ax.set_xlim(max(self.data.data['Time']) - 10, max(self.data.data['Time']) + 10)
         self.ax.set_xlabel('Time')
-        self.ax.set_ylabel('Temperature')
+        self.ax.set_ylabel('Temperature [C]')
 
         return self.line
 
