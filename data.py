@@ -1,9 +1,9 @@
-import pandas as pd
-from datetime import datetime as dt
+from pandas import DataFrame
 from random import random
 
 BASE_T = 20.
 RAND_MULT = 10.
+DATA_PATH = 'data/data.txt'
 
 
 class Data:
@@ -12,7 +12,11 @@ class Data:
     def __init__(self):
 
         data_init = {'Time': [1], 'Temp': [self.rand_temp()]}
-        self.data = pd.DataFrame(data_init)
+        self.data = DataFrame(data_init)
+
+        # data exporting
+        self.start_recording_index = None
+        self.stop_recording_index = None
 
     @staticmethod
     def rand_temp():
@@ -27,10 +31,16 @@ class Data:
 
         print(self.data)
 
+    def start_recording(self):
 
+        self.start_recording_index = self.data.tail(1).index.tolist()[0]
+        print('Data recording - started')
 
+    def stop_recording(self):
 
+        self.stop_recording_index = self.data.tail(1).index.tolist()[0]
 
+        data_to_export = self.data.iloc[self.start_recording_index:self.stop_recording_index]
+        data_to_export.to_csv(DATA_PATH)
 
-
-
+        print(f'Data recording stopped - exported to: {DATA_PATH}')

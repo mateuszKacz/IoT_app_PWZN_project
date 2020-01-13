@@ -1,4 +1,9 @@
-import tkinter as tk
+# tworzenie i usuwanie urzadzen, dodanie zapisywania do pliku i zbierania (start, stop) danych.
+# dodanie flag '-n 4' -> tworzenie 4 urzadzen fejkowych przy starcie - Done
+# dodanie flagi '-f <sciezka do pliku>' dodanie urzadzen z pliku - Done
+# Readme.md - cel, instruckja instalacji, przyklad uruchomienia
+
+from tkinter import Tk
 from styles import Styles
 from gui import GUI
 from data import Data
@@ -11,7 +16,7 @@ def main():
     # flags reading
     params = read_flags()
     # tkinter init
-    root = tk.Tk()
+    root = Tk()
     root.geometry("600x400")
     root.title('IoT Manager')
     # devices init

@@ -1,4 +1,4 @@
-from tkinter import Label, Button, Radiobutton, Canvas, Frame, StringVar, TOP, LEFT, RIGHT
+from tkinter import Button, Radiobutton, Frame, StringVar, TOP, LEFT, RIGHT
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.animation as animation
@@ -26,7 +26,12 @@ class GUI(Frame):
         self.right_bottom_frame.pack()
         self.button_add_device = Button(self.left_frame, text='Add Device', relief='groove',
                                         command=self.add_device).pack(side=TOP, expand=True, fill='x')
-        self.test_button = Button(self.right_bottom_frame, text='test', relief='groove').pack()
+        # data export
+        self.data = data
+        self.start_recording_button = Button(self.right_bottom_frame, text='Start Recording', relief='groove',
+                                             command=self.start_recording).pack(side=LEFT)
+        self.stop_recording_button = Button(self.right_bottom_frame, text='Stop Recording', relief='groove',
+                                            command=self.stop_recording).pack()
 
         # IoT devices - menu
         self.devices = devices
@@ -34,7 +39,6 @@ class GUI(Frame):
         self.iot_dev_name_var.set(self.devices.list_of_devices[0].serial_number)
         self.radio_buttons_init()
         # other objects
-        self.data = data
         self.ani = None
         self.main_frame.pack_propagate(0)
         self.root.resizable(0, 0)
@@ -90,6 +94,15 @@ class GUI(Frame):
         for dev in self.devices.list_of_devices:
             Radiobutton(self.left_frame, text=dev.serial_number, variable=self.iot_dev_name_var,
                         value=dev.serial_number).pack(fill='both')
+
+    def start_recording(self):
+        """Start recording data to export using Data class method"""
+        self.data.start_recording()
+
+    def stop_recording(self):
+        """Stops recording data and exports using Data class method"""
+        self.data.stop_recording()
+
 
 
 
