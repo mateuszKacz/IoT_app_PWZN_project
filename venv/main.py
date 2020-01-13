@@ -4,16 +4,19 @@ from gui import GUI
 from datetime import datetime as dt
 from data import Data
 from device import Devices
-import sys
+from flags import read_flags
 
 
 def main():
+
+    # flags reading
+    params = read_flags()
     # tkinter init
     root = tk.Tk()
     root.geometry("600x400")
     root.title('IoT Manager')
     # devices init
-    devices = Devices()
+    devices = Devices(params)
     data = Data()
 
     # gui start
