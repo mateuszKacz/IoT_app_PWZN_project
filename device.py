@@ -54,6 +54,8 @@ class Device:
 
         self.type = 'Raspberry Pi'
         self.serial_number = self.name(number, name)
+        self.index = number
+        self.data_name = 'Temp_' + self.serial_number
 
     @staticmethod
     def name(number, name):

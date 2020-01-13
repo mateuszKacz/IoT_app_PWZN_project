@@ -1,10 +1,9 @@
-# tworzenie i usuwanie urzadzen, dodanie zapisywania do pliku i zbierania (start, stop) danych. - dodać usuwanie / zmiana wykresu
+# tworzenie i usuwanie urzadzen, dodanie zapisywania do pliku i zbierania (start, stop) danych. - dodać usuwanie 
 # dodanie flag '-n 4' -> tworzenie 4 urzadzen fejkowych przy starcie - Done
 # dodanie flagi '-f <sciezka do pliku>' dodanie urzadzen z pliku - Done
 # Readme.md - cel, instruckja instalacji, przyklad uruchomienia - Done
 
 from tkinter import Tk
-from styles import Styles
 from gui import GUI
 from data import Data
 from device import Devices
@@ -23,7 +22,7 @@ def main():
     devices = Devices(params)
 
     # data gen
-    data = Data()
+    data = Data(devices)
 
     # gui start
     gui = GUI(root, data, devices)

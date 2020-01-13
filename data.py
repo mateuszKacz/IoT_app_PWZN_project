@@ -10,10 +10,11 @@ RAND_MULT = 10.
 class Data:
     """Class where IoT devices data are generated and stored"""
 
-    def __init__(self):
+    def __init__(self, devices):
 
-        data_init = {'Time': [1], 'Temp': [self.rand_temp()]}
-        self.data = DataFrame(data_init)
+        # data frames init
+        self.devices = devices
+        self.data_init()
 
         # data exporting
         self.start_recording_index = None
@@ -24,6 +25,15 @@ class Data:
         mkdir(self.data_dir)
         self.data_files_count = 0
 
+    def data_init(self):
+        """Initiates data fream with mock data"""
+        data_init = {'Time': [1]}
+
+        for device in self.devices.list_of_devices:
+            data_init[device.data_name] = self.rand_temp()
+
+        self.data = DataFrame(data_init)
+
     @staticmethod
     def rand_temp():
 
@@ -31,7 +41,12 @@ class Data:
 
     def add_data(self):
 
-        self.data = self.data.append({'Time': len(self.data)+1, 'Temp': self.rand_temp()}, ignore_index=True)
+        append_data = {'Time': len(self.data) + 1}
+        for device in self.devices.list_of_devices:
+
+            append_data[device.data_name] = self.rand_temp()
+
+        self.data = self.data.append(append_data, ignore_index=True)
 
     def show_data(self):
 

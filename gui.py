@@ -2,7 +2,10 @@ from tkinter import Button, Radiobutton, Frame, StringVar, TOP, LEFT, RIGHT
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.animation as animation
+from styles import Styles
+from random import choice
 
+GRAPH_MEASURE = 'Temp_'
 
 class GUI(Frame):
     """All the graphic interface gathered here"""
@@ -11,6 +14,7 @@ class GUI(Frame):
         super().__init__(root)
         self.root = root
         self.root.geometry('500x400')
+        self.styles = Styles()
 
         # make GUI
         self.main_frame = Frame(self.root, height=400, width=500)
@@ -37,6 +41,7 @@ class GUI(Frame):
         self.devices = devices
         self.iot_dev_name_var = StringVar()
         self.iot_dev_name_var.set(self.devices.list_of_devices[0].serial_number)
+        self.iot_dev_name_var.trace('w', lambda *pargs: self.callback_iot_dev_name_var())
         self.radio_buttons_init()
         # other objects
         self.ani = None
@@ -49,7 +54,7 @@ class GUI(Frame):
         self.figure.suptitle('Real-time temperature')
 
         self.ax = self.figure.add_subplot(111)
-        self.line = self.ax.plot(self.data.data['Time'], self.data.data['Temp'])
+        self.line = self.ax.plot(self.data.data['Time'], self.data.data[self.devices.list_of_devices[0].data_name])
 
         self.canvas = FigureCanvasTkAgg(self.figure, self.right_top_frame)
         self.canvas.draw()
@@ -61,7 +66,9 @@ class GUI(Frame):
     def update_graph(self, i):
         """Method updates created graph"""
         self.data.add_data()
-        self.ax.plot(self.data.data['Time'], self.data.data['Temp'], color='blue')
+
+        self.ax.plot(self.data.data['Time'], self.data.data[GRAPH_MEASURE + self.iot_dev_name_var.get()],
+                     color=self.styles.graph_color)
         self.ax.set_xlim(max(self.data.data['Time']) - 10, max(self.data.data['Time']) + 10)
         self.ax.set_xlabel('Time')
         self.ax.set_ylabel('Temperature [C]')
@@ -102,6 +109,11 @@ class GUI(Frame):
     def stop_recording(self):
         """Stops recording data and exports using Data class method"""
         self.data.stop_recording()
+
+    def callback_iot_dev_name_var(self):
+        """Clears the graph and sets new color on Radiobutton(devices menu) value change"""
+        self.styles.graph_color = choice(self.styles.colors)
+        self.ax.clear()
 
 
 
