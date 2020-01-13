@@ -14,6 +14,7 @@ class Devices:
         self.number_of_devices = len(self.list_of_devices)
 
     def create_dev_list(self):
+        """Creates list of devices depending on script parameters"""
 
         if 'n' in self.params.keys():
             _list_of_devices = [Device(x) for x in range(1, self.params['n'] + 1)]
@@ -23,6 +24,7 @@ class Devices:
                 _list_of_devices = [Device(x, name=None) for x, name in file_data]
             except ValueError as err:
                 print(err)
+                print('Device-source file structure: {index(int8)}, {name(str25)}')
                 print('Initiating with sample Device')
                 _list_of_devices = [Device(1)]
         else:
@@ -31,17 +33,18 @@ class Devices:
         return _list_of_devices
 
     def show_devices(self):
+        """Method prints list of devices"""
 
         print(self.list_of_devices)
 
     def add_device(self):
+        """Method creates new device"""
 
         self.number_of_devices += 1
         new_device = Device(self.number_of_devices)
         self.list_of_devices.append(new_device)
 
-        for device in self.list_of_devices:
-            device.info()
+        print('New device added')
 
 
 class Device:
@@ -54,6 +57,7 @@ class Device:
 
     @staticmethod
     def name(number, name):
+        """Method sets device's serial_number"""
 
         if name is None:
             serial_number = DEVICE_SERIAL_CORE + str(number)

@@ -44,7 +44,7 @@ class GUI(Frame):
         self.root.resizable(0, 0)
 
     def draw_graph(self):
-
+        """Method draws a graph from data gathered in Data-type object"""
         self.figure = plt.Figure(figsize=(6,5), dpi=70)
         self.figure.suptitle('Real-time temperature')
 
@@ -59,7 +59,7 @@ class GUI(Frame):
         self.start()
 
     def update_graph(self, i):
-
+        """Method updates created graph"""
         self.data.add_data()
         self.ax.plot(self.data.data['Time'], self.data.data['Temp'], color='blue')
         self.ax.set_xlim(max(self.data.data['Time']) - 10, max(self.data.data['Time']) + 10)
@@ -69,11 +69,11 @@ class GUI(Frame):
         return self.line
 
     def start(self):
-
+        """Method starts animation of matplotlib's graph"""
         self.ani = animation.FuncAnimation(
             self.figure,
             self.update_graph,
-            frames=1000,
+            frames=10000,
             interval=200,
             repeat=False)
 
@@ -82,15 +82,15 @@ class GUI(Frame):
         print('started animation')
 
     def add_device(self):
+        """Method adds device to the list in Devices class and adds Radiobutton associated with it"""
 
-        print('Added new device')
         self.devices.add_device()
         Radiobutton(self.left_frame, text=self.devices.list_of_devices[-1].serial_number,
                     variable=self.iot_dev_name_var,
                     value=self.devices.list_of_devices[-1].serial_number).pack(fill='both')
 
     def radio_buttons_init(self):
-        """Creates as many buttons as needed"""
+        """Creates as many as class Devices contains in list_of_devices"""
         for dev in self.devices.list_of_devices:
             Radiobutton(self.left_frame, text=dev.serial_number, variable=self.iot_dev_name_var,
                         value=dev.serial_number).pack(fill='both')

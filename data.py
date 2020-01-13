@@ -1,9 +1,10 @@
 from pandas import DataFrame
 from random import random
+from datetime import datetime
+from os import mkdir
 
 BASE_T = 20.
 RAND_MULT = 10.
-DATA_PATH = 'data/data.txt'
 
 
 class Data:
@@ -17,6 +18,11 @@ class Data:
         # data exporting
         self.start_recording_index = None
         self.stop_recording_index = None
+
+        # data folder creation
+        self.data_dir = 'data_' + datetime.now().strftime('%Y_%m_%d_%H_%M_%S')
+        mkdir(self.data_dir)
+        self.data_files_count = 0
 
     @staticmethod
     def rand_temp():
@@ -40,7 +46,17 @@ class Data:
 
         self.stop_recording_index = self.data.tail(1).index.tolist()[0]
 
+        # create slice to export
         data_to_export = self.data.iloc[self.start_recording_index:self.stop_recording_index]
-        data_to_export.to_csv(DATA_PATH)
 
-        print(f'Data recording stopped - exported to: {DATA_PATH}')
+        # new data file
+        data_file_path = self.data_dir + '/' + 'data_' + str(self.data_files_count)
+
+        try:
+            data_to_export.to_csv(data_file_path)
+            self.data_files_count += 1
+            print(f'Data recording - stopped ; exported to: {data_file_path}')
+
+        except NotADirectoryError as err:
+            print(err)
+
