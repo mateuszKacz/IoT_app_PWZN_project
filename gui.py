@@ -7,10 +7,12 @@ from random import choice
 
 GRAPH_MEASURE = 'Temp_'
 
+
 class GUI(Frame):
-    """All the graphic interface gathered here"""
+    """All the graphic interface connected gathered here"""
 
     def __init__(self, root, data, devices):
+        """Method initiates GUI and all it's main components"""
         super().__init__(root)
         self.root = root
         self.root.geometry('500x400')

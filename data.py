@@ -14,7 +14,7 @@ class Data:
 
         # data frames init
         self.devices = devices
-        self.data_init()
+        self.data = self.data_init()
 
         # data exporting
         self.start_recording_index = None
@@ -27,20 +27,21 @@ class Data:
 
     def data_init(self):
         """Initiates data fream with mock data"""
+
         data_init = {'Time': [1]}
 
         for device in self.devices.list_of_devices:
             data_init[device.data_name] = self.rand_temp()
 
-        self.data = DataFrame(data_init)
+        return DataFrame(data_init)
 
     @staticmethod
     def rand_temp():
-
+        """Random temp generator (mock data)"""
         return BASE_T + random() * RAND_MULT
 
     def add_data(self):
-
+        """Method adds new row to existing data frame (mock data)"""
         append_data = {'Time': len(self.data) + 1}
         for device in self.devices.list_of_devices:
 
@@ -49,16 +50,16 @@ class Data:
         self.data = self.data.append(append_data, ignore_index=True)
 
     def show_data(self):
-
+        """Method prints whole dataframe"""
         print(self.data)
 
     def start_recording(self):
-
+        """Method marks index when recording is started with button push"""
         self.start_recording_index = self.data.tail(1).index.tolist()[0]
         print('Data recording - started')
 
     def stop_recording(self):
-
+        """Method marks index when recording is stopped by button push and exports specified slice of data to file"""
         self.stop_recording_index = self.data.tail(1).index.tolist()[0]
 
         # create slice to export

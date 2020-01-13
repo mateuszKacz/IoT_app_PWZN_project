@@ -1,4 +1,4 @@
-# tworzenie i usuwanie urzadzen, dodanie zapisywania do pliku i zbierania (start, stop) danych. - dodać usuwanie 
+# tworzenie i usuwanie urzadzen, dodanie zapisywania do pliku i zbierania (start, stop) danych. - dodać usuwanie
 # dodanie flag '-n 4' -> tworzenie 4 urzadzen fejkowych przy starcie - Done
 # dodanie flagi '-f <sciezka do pliku>' dodanie urzadzen z pliku - Done
 # Readme.md - cel, instruckja instalacji, przyklad uruchomienia - Done
