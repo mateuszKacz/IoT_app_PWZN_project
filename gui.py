@@ -32,10 +32,7 @@ class GUI(Frame):
         self.devices = devices
         self.iot_dev_name_var = StringVar()
         self.iot_dev_name_var.set(self.devices.list_of_devices[0].serial_number)
-        self.radiobutton_iot_dev_1 = Radiobutton(self.left_frame, text=self.devices.list_of_devices[0].serial_number,
-                                                 variable=self.iot_dev_name_var,
-                                                 value=self.devices.list_of_devices[0].serial_number).pack(fill='both')
-
+        self.radio_buttons_init()
         # other objects
         self.data = data
         self.ani = None
@@ -87,6 +84,12 @@ class GUI(Frame):
         Radiobutton(self.left_frame, text=self.devices.list_of_devices[-1].serial_number,
                     variable=self.iot_dev_name_var,
                     value=self.devices.list_of_devices[-1].serial_number).pack(fill='both')
+
+    def radio_buttons_init(self):
+        """Creates as many buttons as needed"""
+        for dev in self.devices.list_of_devices:
+            Radiobutton(self.left_frame, text=dev.serial_number, variable=self.iot_dev_name_var,
+                        value=dev.serial_number).pack(fill='both')
 
 
 

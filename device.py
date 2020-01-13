@@ -1,4 +1,3 @@
-
 from numpy import genfromtxt
 
 # tworzenie i usuwanie urzadzen, dodanie zapisywania do pliku i zbierania (start, stop) danych.
@@ -24,8 +23,13 @@ class Devices:
         if 'n' in self.params.keys():
             _list_of_devices = [Device(x) for x in range(1, self.params['n'] + 1)]
         elif 'f' in self.params.keys():
-            file_data = genfromtxt(self.params['f'], delimeter=',')
-            _list_of_devices = [Device(x, name=name) for x, name in file_data]
+            try:
+                file_data = genfromtxt(self.params['f'], dtype=[('myint','i8'), ('mystring','S25')], delimiter=',')
+                _list_of_devices = [Device(x, name=None) for x, name in file_data]
+            except ValueError as err:
+                print(err)
+                print('Initiating with sample Device')
+                _list_of_devices = [Device(1)]
         else:
             _list_of_devices = [Device(1)]
 
