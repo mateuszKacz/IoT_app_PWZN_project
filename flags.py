@@ -1,6 +1,7 @@
 import sys
 import getopt
 
+
 def read_flags():
     """Function takes string of parameters and returns dictionary of parameters"""
 
