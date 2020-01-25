@@ -1,6 +1,6 @@
 
 class Styles:
-    """Contains all the styles and fonts' types used in app"""
+    """Contains all the styles, colors and fonts' types used in app"""
 
     def __init__(self):
         """Initializes main variables"""

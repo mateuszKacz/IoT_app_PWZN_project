@@ -1,37 +1,38 @@
-import sys
-import getopt
-import os
+import argparse
+from os.path import isfile
+from sys import exit
 
 
 def read_flags():
     """Function takes string of parameters and returns dictionary of parameters"""
 
-    possible_flags = ['n', 'f']
-    params = {}
+    parser = argparse.ArgumentParser(description="Parse input params")
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument('-n', metavar='n', type=int, help='Input how many mock devices to create at startup')
+    group.add_argument('-f', metavar='f', type=str, help='Path to file with devices to create')
+
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'n:f:')
+        args = parser.parse_args()
+    except argparse.ArgumentError as exc:
+        print('To many params')
+        raise exc
 
-    except getopt.GetoptError:
-        print(f'Wrong flag! Accepted flags: {possible_flags}')
-        sys.exit()
-
-    for opt, arg in opts:
-        if opt == '-n':
-            if int(arg) > 0:
-                params['n'] = int(arg)
-            else:
-                print('Wrong flag value!')
-                sys.exit()
-        elif opt == '-f':
-            if os.path.isfile(arg):
-                params['f'] = arg
-            else:
-                print('Parameter is not a directory or file does not exist!')
-                sys.exit()
+    if args.n is not None:
+        if args.n > 16:
+            print('-n parameter to big, making max 16 devices')
+            return {'n': 16}
+        elif args.n <= 0:
+            raise ValueError('Wrong -n parameter value')
         else:
-            print('Unknown parameter!')
+            return {'n': args.n}
 
-    return params
+    elif args.f is not None:
+        if isfile(args.f):
+            return {'f': args.f}
+        else:
+            print('-f parameter is not file')
+            raise NotADirectoryError
 
-
+    else:
+        return {}
 

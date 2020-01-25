@@ -9,7 +9,15 @@ GRAPH_MEASURE = 'Temp_'
 
 
 class GUI(Frame):
-    """All the graphic interface connected gathered here"""
+    """All the graphic interface connected gathered here
+
+    :param root: Tkinter root object for the main window
+    :type root: object
+    :param data: Data class object
+    :type data: object
+    :param devices: Devices class object
+    :type devices: object
+    """
 
     def __init__(self, root, data, devices):
         """Method initiates GUI and all it's main components"""
@@ -92,11 +100,13 @@ class GUI(Frame):
 
     def add_device(self):
         """Method adds device to the list in Devices class and adds Radiobutton associated with it"""
-
-        self.devices.add_device()
-        Radiobutton(self.left_frame, text=self.devices.list_of_devices[-1].serial_number,
-                    variable=self.iot_dev_name_var,
-                    value=self.devices.list_of_devices[-1].serial_number).pack(fill='both')
+        if self.devices.number_of_devices < 16:
+            self.devices.add_device()
+            Radiobutton(self.left_frame, text=self.devices.list_of_devices[-1].serial_number,
+                        variable=self.iot_dev_name_var,
+                        value=self.devices.list_of_devices[-1].serial_number).pack(fill='both')
+        else:
+            print('To many devices!')
 
     def radio_buttons_init(self):
         """Creates as many as class Devices contains in list_of_devices"""
@@ -116,7 +126,3 @@ class GUI(Frame):
         """Clears the graph and sets new color on Radiobutton(devices menu) value change"""
         self.styles.graph_color = choice(self.styles.colors)
         self.ax.clear()
-
-
-
-

@@ -4,7 +4,11 @@ DEVICE_SERIAL_CORE = 'iot-dev-'
 
 
 class Devices:
-    """Class contains main info about devices"""
+    """Class contains list of devices.
+
+    :param params: szhould be a dictionary with script parameters
+    :type params: dict
+    """
 
     def __init__(self, params):
         # imported script parameters
@@ -48,7 +52,13 @@ class Devices:
 
 
 class Device:
-    """Class cointains info about single device"""
+    """Class cointains info about single device.
+
+    :param number: number of added device
+    :type number: int
+    :param name: optional name of the device - if not specified, the name would be generated
+    :type name: str
+    """
 
     def __init__(self, number, name=None):
 

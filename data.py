@@ -1,14 +1,22 @@
 from pandas import DataFrame
 from random import random
 from datetime import datetime
-from os import mkdir
+from os import mkdir, chdir
+import pathlib
 
 BASE_T = 20.
 RAND_MULT = 10.
 
+ROOT_PATH = pathlib.Path(__file__).absolute().parent
+
 
 class Data:
-    """Class where IoT devices data are generated and stored"""
+    """Class where IoT devices data are generated and stored. Also data files have implemented simple version system
+    based on current date and time.
+
+    :param devices: Devices class object
+    :type devices: object
+    """
 
     def __init__(self, devices):
 
@@ -22,11 +30,10 @@ class Data:
 
         # data folder creation
         self.data_dir = 'data_' + datetime.now().strftime('%Y_%m_%d_%H_%M_%S')
-        mkdir(self.data_dir)
         self.data_files_count = 0
 
     def data_init(self):
-        """Initiates data fream with mock data"""
+        """Initiates data frame with mock data"""
 
         data_init = {'Time': [1]}
 
@@ -60,19 +67,34 @@ class Data:
 
     def stop_recording(self):
         """Method marks index when recording is stopped by button push and exports specified slice of data to file"""
-        self.stop_recording_index = self.data.tail(1).index.tolist()[0]
 
-        # create slice to export
-        data_to_export = self.data.iloc[self.start_recording_index:self.stop_recording_index]
+        if self.start_recording_index is None:
+            print('You should start the recording first with -Start recording- button.')
+        else:
+            try:
+                chdir(ROOT_PATH)
+                chdir('Exported_data')
+            except NotADirectoryError:
+                mkdir('Exported_data')
+                chdir('Exported_data')
+            try:
+                mkdir(self.data_dir)
+            except FileExistsError:
+                pass
 
-        # new data file
-        data_file_path = self.data_dir + '/' + 'data_' + str(self.data_files_count)
+            self.stop_recording_index = self.data.tail(1).index.tolist()[0]
 
-        try:
-            data_to_export.to_csv(data_file_path)
-            self.data_files_count += 1
-            print(f'Data recording - stopped ; exported to: {data_file_path}')
+            # create slice to export
+            data_to_export = self.data.iloc[self.start_recording_index:self.stop_recording_index]
 
-        except NotADirectoryError as err:
-            print(err)
+            # new data file
+            data_file_path = self.data_dir + '/' + 'data_' + str(self.data_files_count)
+
+            try:
+                data_to_export.to_csv(data_file_path)
+                self.data_files_count += 1
+                print(f'Data recording - stopped ; exported to: {data_file_path}')
+
+            except NotADirectoryError as err:
+                print(err)
 
